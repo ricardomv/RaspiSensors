@@ -1,9 +1,11 @@
 cmake_minimum_required (VERSION 2.6)
 project (RasPiTesting)
 
-#find_package(bcm2535 REQUIRED)
-#include_directories(${bcm2535_INCLUDE_DIRS})
-#set(LIBS ${LIBS} ${bcm2535_LIBRARIES})
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
+
+find_package(BCM2835 REQUIRED)
+include_directories(${BCM2835_INCLUDE_DIRS})
+set(LIBS ${LIBS} ${BCM2835_LIBRARIES})
 
 add_subdirectory (I2Cdev)
 add_subdirectory (BMP085)
@@ -19,4 +21,4 @@ include_directories (${CMAKE_SOURCE_DIR}/SSD1308)
 
 add_executable (raspitest main.cpp)
 
-target_link_libraries(raspitest I2Cdev BMP085 HMC5883L MPU6050 SSD1308)
+target_link_libraries(raspitest I2Cdev BMP085 HMC5883L MPU6050 SSD1308 ${LIBS})
