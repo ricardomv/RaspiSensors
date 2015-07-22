@@ -4,7 +4,7 @@ include_directories (${CMAKE_CURRENT_BINARY_DIR})
 include_directories (${CMAKE_SOURCE_DIR}/I2Cdev)
 
 # add the main library
-add_library (BMP085 BMP085.cpp ${CMAKE_CURRENT_BINARY_DIR}/BMP085.h)
+add_library (BMP085 BMP085.cpp)
 
 target_link_libraries(BMP085 I2Cdev)
 
