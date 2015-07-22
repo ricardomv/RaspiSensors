@@ -72,56 +72,56 @@ THE SOFTWARE.
 #define BMP085_MODE_PRESSURE_3      0xF4
 
 class BMP085 {
-    public:
-        BMP085();
-        BMP085(uint8_t address);
-        
-        void initialize();
-        bool testConnection();
+public:
+    BMP085();
+    BMP085(uint8_t address);
+
+    void initialize();
+    bool testConnection();
 
 #ifdef BMP085_INCLUDE_INDIVIDUAL_CALIBRATION_ACCESS
-        /* calibration register methods */
-        int16_t     getAC1();
-        int16_t     getAC2();
-        int16_t     getAC3();
-        uint16_t    getAC4();
-        uint16_t    getAC5();
-        uint16_t    getAC6();
-        int16_t     getB1();
-        int16_t     getB2();
-        int16_t     getMB();
-        int16_t     getMC();
-        int16_t     getMD();
+    /* calibration register methods */
+    int16_t     getAC1();
+    int16_t     getAC2();
+    int16_t     getAC3();
+    uint16_t    getAC4();
+    uint16_t    getAC5();
+    uint16_t    getAC6();
+    int16_t     getB1();
+    int16_t     getB2();
+    int16_t     getMB();
+    int16_t     getMC();
+    int16_t     getMD();
 #endif
 
-        /* CONTROL register methods */
-        uint8_t     getControl();
-        void        setControl(uint8_t value);
+    /* CONTROL register methods */
+    uint8_t     getControl();
+    void        setControl(uint8_t value);
 
-        /* MEASURE register methods */
-        uint16_t    getMeasurement2(); // 16-bit data
-        uint32_t    getMeasurement3(); // 24-bit data
-        uint8_t     getMeasureDelayMilliseconds(uint8_t mode=0);
-        uint16_t    getMeasureDelayMicroseconds(uint8_t mode=0);
+    /* MEASURE register methods */
+    uint16_t    getMeasurement2(); // 16-bit data
+    uint32_t    getMeasurement3(); // 24-bit data
+    uint8_t     getMeasureDelayMilliseconds(uint8_t mode=0);
+    uint16_t    getMeasureDelayMicroseconds(uint8_t mode=0);
 
-        // convenience methods
-        void        loadCalibration();
-        uint16_t    getRawTemperature();
-        float       getTemperatureC();
-        float       getTemperatureF();
-        uint32_t    getRawPressure();
-        float       getPressure();
-        float       getAltitude(float pressure, float seaLevelPressure=101325);
+    // convenience methods
+    void        loadCalibration();
+    uint16_t    getRawTemperature();
+    float       getTemperatureC();
+    float       getTemperatureF();
+    uint32_t    getRawPressure();
+    float       getPressure();
+    float       getAltitude(float pressure, float seaLevelPressure=101325);
 
-   private:
-        uint8_t devAddr;
-        uint8_t buffer[3];
+private:
+    uint8_t devAddr;
+    uint8_t buffer[3];
 
-        bool calibrationLoaded;
-        int16_t ac1, ac2, ac3, b1, b2, mb, mc, md;
-        uint16_t ac4, ac5, ac6;
-        int32_t b5;
-        uint8_t measureMode;
+    bool calibrationLoaded;
+    int16_t ac1, ac2, ac3, b1, b2, mb, mc, md;
+    uint16_t ac4, ac5, ac6;
+    int32_t b5;
+    uint8_t measureMode;
 };
 
 #endif /* _BMP085_H_ */

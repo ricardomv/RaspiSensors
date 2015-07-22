@@ -39,156 +39,156 @@ THE SOFTWARE.
 #include "fixedWidthFont.h"
 #endif
 
-SSD1308::SSD1308(uint8_t address) :
-  m_devAddr(address)
+SSD1308::SSD1308(uint8_t address):
+    m_devAddr(address)
 {
 }
 
 void SSD1308::initialize()
 {
-  setHorizontalAddressingMode();
-  clearDisplay();
+    setHorizontalAddressingMode();
+    clearDisplay();
 }
 
 void SSD1308::clearDisplay()
 {
-  setDisplayOff();
-  setPageAddress(0, 7);     // all pages
-  setColumnAddress(0, 127); // all columns
-  for (uint8_t page = 0; page < 8; page++)
-  {
-    for (uint8_t col = 0; col < 128; col++)
+    setDisplayOff();
+    setPageAddress(0, 7);     // all pages
+    setColumnAddress(0, 127); // all columns
+    for (uint8_t page = 0; page < 8; page++)
     {
-      sendData(0x0);
+        for (uint8_t col = 0; col < 128; col++)
+        {
+            sendData(0x0);
+        }
     }
-  }
-  setDisplayOn();
+    setDisplayOn();
 }
 
 void SSD1308::fillDisplay()
 {
-  setPageAddress(0, MAX_PAGE);      // all pages
-  setColumnAddress(0, MAX_COL); // all columns
+    setPageAddress(0, MAX_PAGE);      // all pages
+    setColumnAddress(0, MAX_COL); // all columns
 
-  uint8_t b = 0;
-  for (uint8_t page = 0; page < PAGES; page++)
-  {
-    for (uint8_t col = 0; col < COLUMNS; col++)
+    uint8_t b = 0;
+    for (uint8_t page = 0; page < PAGES; page++)
     {
-      sendData(b++);
+        for (uint8_t col = 0; col < COLUMNS; col++)
+        {
+            sendData(b++);
+        }
     }
-  }
 }
 
 void SSD1308::writeChar(char chr)
 {
 #ifdef SSD1308_USE_FONT
-  const uint8_t char_index = chr - 0x20;
-  for (uint8_t i = 0; i < 8; i++) {
-     const uint8_t b = pgm_read_byte( &fontData[char_index][i] );
-     sendData( b );
-  }
+    const uint8_t char_index = chr - 0x20;
+    for (uint8_t i = 0; i < 8; i++) {
+         const uint8_t b = pgm_read_byte( &fontData[char_index][i] );
+         sendData( b );
+    }
 #endif
 }
 
 void SSD1308::writeString(uint8_t row, uint8_t col, uint16_t len, const char * text)
 {
-  uint16_t index = 0;
-  setPageAddress(row, MAX_PAGE);
-  const uint8_t col_addr = FONT_WIDTH*col;
-  setColumnAddress(col_addr, MAX_COL);
+    uint16_t index = 0;
+    setPageAddress(row, MAX_PAGE);
+    const uint8_t col_addr = FONT_WIDTH*col;
+    setColumnAddress(col_addr, MAX_COL);
 
-  while ((col+index) < CHARS && (index < len)) {
-     // write first line, starting at given position
-     writeChar(text[index++]);
-  }
-
-  // write remaining lines
-  // write until the end of memory
-  // then wrap around again from the top.
-  if (index + 1 < len) {
-    setPageAddress(row + 1, MAX_PAGE);
-    setColumnAddress(0, MAX_COL);
-    bool wrapEntireScreen = false;
-    while (index + 1 < len) {
-       writeChar(text[index++]);
-       // if we've written the last character space on the screen,
-       // reset the page and column address so that it wraps around from the top again
-       if (!wrapEntireScreen && (row*CHARS + col + index) > 127) {
-         setPageAddress(0, MAX_PAGE);
-         setColumnAddress(0, MAX_COL);
-         wrapEntireScreen = true;
-       }
+    while ((col+index) < CHARS && (index < len)) {
+         // write first line, starting at given position
+         writeChar(text[index++]);
     }
-  }
+
+    // write remaining lines
+    // write until the end of memory
+    // then wrap around again from the top.
+    if (index + 1 < len) {
+        setPageAddress(row + 1, MAX_PAGE);
+        setColumnAddress(0, MAX_COL);
+        bool wrapEntireScreen = false;
+        while (index + 1 < len) {
+             writeChar(text[index++]);
+             // if we've written the last character space on the screen,
+             // reset the page and column address so that it wraps around from the top again
+             if (!wrapEntireScreen && (row*CHARS + col + index) > 127) {
+                 setPageAddress(0, MAX_PAGE);
+                 setColumnAddress(0, MAX_COL);
+                 wrapEntireScreen = true;
+             }
+        }
+    }
 }
 
 void SSD1308::sendCommand(uint8_t command)
 {
-  I2Cdev::writeByte(m_devAddr, COMMAND_MODE, command);
+    I2Cdev::writeByte(m_devAddr, COMMAND_MODE, command);
 }
 
 void SSD1308::sendCommands(uint8_t len, uint8_t* commands)
 {
-  I2Cdev::writeBytes(m_devAddr, COMMAND_MODE, len, commands);
+    I2Cdev::writeBytes(m_devAddr, COMMAND_MODE, len, commands);
 }
 
 void SSD1308::sendData(uint8_t data)
 {
-  I2Cdev::writeByte(m_devAddr, DATA_MODE, data);
+    I2Cdev::writeByte(m_devAddr, DATA_MODE, data);
 }
 
 void SSD1308::sendData(uint8_t len, uint8_t* data)
 {
-  I2Cdev::writeBytes(m_devAddr, DATA_MODE, len, data);
+    I2Cdev::writeBytes(m_devAddr, DATA_MODE, len, data);
 }
 
 void SSD1308::setHorizontalAddressingMode()
 {
-  setMemoryAddressingMode(HORIZONTAL_ADDRESSING_MODE);
+    setMemoryAddressingMode(HORIZONTAL_ADDRESSING_MODE);
 }
 void SSD1308::setVerticalAddressingMode()
 {
-  setMemoryAddressingMode(VERTICAL_ADDRESSING_MODE);
+    setMemoryAddressingMode(VERTICAL_ADDRESSING_MODE);
 }
 void SSD1308::setPageAddressingMode()
 {
-  setMemoryAddressingMode(PAGE_ADDRESSING_MODE);
+    setMemoryAddressingMode(PAGE_ADDRESSING_MODE);
 }
 
 void SSD1308::setMemoryAddressingMode(uint8_t mode)
 {
-  uint8_t cmds[2] = { SET_MEMORY_ADDRESSING_MODE, mode };
-  sendCommands(2, cmds);
+    uint8_t cmds[2] = { SET_MEMORY_ADDRESSING_MODE, mode };
+    sendCommands(2, cmds);
 }
 
 void SSD1308::setDisplayOn()
 {
-  sendCommand(SET_DISPLAY_POWER_ON);
+    sendCommand(SET_DISPLAY_POWER_ON);
 }
 
 void SSD1308::setDisplayOff()
 {
-  sendCommand(SET_DISPLAY_POWER_OFF);
+    sendCommand(SET_DISPLAY_POWER_OFF);
 }
 
 void SSD1308::setDisplayPower(bool on)
 {
-  if (on) {
-    setDisplayOn();
-  } else {
-    setDisplayOff();
-  }
+    if (on) {
+        setDisplayOn();
+    } else {
+        setDisplayOff();
+    }
 }
 
 void SSD1308::setPageAddress(uint8_t start, uint8_t end)
 {
-  uint8_t data[3] = { SET_PAGE_ADDRESS, start, end };
-  sendCommands(3, data);
+    uint8_t data[3] = { SET_PAGE_ADDRESS, start, end };
+    sendCommands(3, data);
 }
 
 void SSD1308::setColumnAddress(uint8_t start, uint8_t end)
 {
-  uint8_t data[3] = { SET_COLUMN_ADDRESS, start, end };
-  sendCommands(3, data);
+    uint8_t data[3] = { SET_COLUMN_ADDRESS, start, end };
+    sendCommands(3, data);
 }
