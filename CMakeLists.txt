@@ -22,3 +22,5 @@ include_directories (${CMAKE_SOURCE_DIR}/SSD1308)
 add_executable (raspitest main.cpp)
 
 target_link_libraries(raspitest I2Cdev BMP085 HMC5883L MPU6050 SSD1308 ${LIBS})
+
+install (TARGETS raspitest DESTINATION bin)

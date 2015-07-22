@@ -7,6 +7,3 @@ include_directories(${CMAKE_SOURCE_DIR}/I2Cdev)
 add_library (HMC5883L HMC5883L.cpp)
 
 target_link_libraries(HMC5883L I2Cdev)
-
-install (TARGETS HMC5883L DESTINATION bin)
-install (FILES HMC5883L.h DESTINATION include)

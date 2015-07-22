@@ -7,6 +7,3 @@ include_directories (${CMAKE_SOURCE_DIR}/I2Cdev)
 add_library (MPU6050 MPU6050.cpp)
 
 target_link_libraries(MPU6050 I2Cdev)
-
-install (TARGETS MPU6050 DESTINATION bin)
-install (FILES MPU6050.h DESTINATION include)

@@ -7,6 +7,3 @@ include_directories (${CMAKE_SOURCE_DIR}/I2Cdev)
 add_library (BMP085 BMP085.cpp)
 
 target_link_libraries(BMP085 I2Cdev)
-
-install (TARGETS BMP085 DESTINATION bin)
-install (FILES BMP085.h DESTINATION include)
