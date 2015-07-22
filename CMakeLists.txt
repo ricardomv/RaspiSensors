@@ -3,9 +3,11 @@ project (RasPiTesting)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
-find_package(BCM2835 REQUIRED)
-include_directories(${BCM2835_INCLUDE_DIRS})
-set(LIBS ${LIBS} ${BCM2835_LIBRARIES})
+find_package(BCM2835)
+if (BCM2835_FOUND)
+    include_directories(${BCM2835_INCLUDE_DIRS})
+    set(LIBS ${LIBS} ${BCM2835_LIBRARIES})
+endif (BCM2835_FOUND)
 
 add_subdirectory (I2Cdev)
 add_subdirectory (BMP085)

@@ -29,6 +29,7 @@ THE SOFTWARE.
 
 #include "I2Cdev.h"
 #include <stdio.h>
+#include <bcm2835.h>
 
 I2Cdev::I2Cdev() { }
 
@@ -69,6 +70,11 @@ int8_t I2Cdev::readBit(uint8_t devAddr, uint8_t regAddr, uint8_t bitNum, uint8_t
   return response == BCM2835_I2C_REASON_OK ;
 }
 
+int8_t I2Cdev::readBitW(uint8_t devAddr, uint8_t regAddr, uint8_t bitNum, uint16_t *data) {
+  // Not Implemented
+  return 0;
+}
+
 /** Read multiple bits from an 8-bit device register.
  * @param devAddr I2C slave device address
  * @param regAddr Register regAddr to read from
@@ -94,6 +100,11 @@ int8_t I2Cdev::readBits(uint8_t devAddr, uint8_t regAddr, uint8_t bitStart, uint
     *data = b;
   }
   return response == BCM2835_I2C_REASON_OK;
+}
+
+int8_t I2Cdev::readBitsW(uint8_t devAddr, uint8_t regAddr, uint8_t bitStart, uint8_t length, uint16_t *data) {
+  // Not Implemented
+  return 0;
 }
 
 /** Read single byte from an 8-bit device register.
@@ -149,6 +160,11 @@ bool I2Cdev::writeBit(uint8_t devAddr, uint8_t regAddr, uint8_t bitNum, uint8_t 
   return response == BCM2835_I2C_REASON_OK;
 }
 
+bool I2Cdev::writeBitW(uint8_t devAddr, uint8_t regAddr, uint8_t bitNum, uint16_t data) {
+  // Not Implemented
+  return 0;
+}
+
 /** Write multiple bits in an 8-bit device register.
  * @param devAddr I2C slave device address
  * @param regAddr Register regAddr to write to
@@ -180,6 +196,11 @@ bool I2Cdev::writeBits(uint8_t devAddr, uint8_t regAddr, uint8_t bitStart, uint8
     response = bcm2835_i2c_write(sendBuf, 2);
     }
   return response == BCM2835_I2C_REASON_OK;
+}
+
+bool I2Cdev::writeBitsW(uint8_t devAddr, uint8_t regAddr, uint8_t bitStart, uint8_t length, uint16_t data) {
+  // Not Implemented
+  return 0;
 }
 
 /** Write single byte to an 8-bit device register.
