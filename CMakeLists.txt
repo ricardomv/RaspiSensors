@@ -3,11 +3,16 @@ project (RasPiTesting)
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
-find_package(BCM2835)
-if (BCM2835_FOUND)
-    include_directories(${BCM2835_INCLUDE_DIRS})
-    set(LIBS ${LIBS} ${BCM2835_LIBRARIES})
-endif (BCM2835_FOUND)
+option (USE_LINUX_I2C
+        "Use linux i2c dev interface" OFF)
+
+if (NOT USE_LINUX_I2C)
+    find_package(BCM2835)
+    if (BCM2835_FOUND)
+        include_directories(${BCM2835_INCLUDE_DIRS})
+        set(LIBS ${LIBS} ${BCM2835_LIBRARIES})
+    endif (BCM2835_FOUND)
+endif (NOT USE_LINUX_I2C)
 
 add_subdirectory (I2Cdev)
 add_subdirectory (BMP085)
